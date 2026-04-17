@@ -29,9 +29,77 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        // Implement your method here!
-        // Please also make more test cases
-        // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        int[] start = startLocation(island);
+        boolean[][] visited = new boolean[island.length][island[0].length];
+
+        return explore(start, island, visited);
+    }
+
+    private static int explore(int[] loc, int[][] island, boolean[][] visited) {
+        int r = loc[0];
+        int c = loc[1];
+
+        if (visited[r][c]) {
+            return 0;
+        }
+
+        if (island[r][c] == 2 || island[r][c] == 3) {
+            return 0;
+        }
+
+        visited[r][c] = true;
+
+        int count = 1;
+
+        for (int[] move : possibleMoves(island, loc)) {
+            count += explore(move, island, visited);
+        }
+
+        return count;
+    }
+
+    public static List<int[]> possibleMoves(int[][] island, int[] location) {
+        int r = location[0];
+        int c = location[1];
+
+        List<int[]> validLocs = new ArrayList<>();
+
+        int newR = r - 1;
+        int newC = c;
+        if (newR >= 0) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r + 1;
+        newC = c;
+        if (newR < island.length) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r;
+        newC = c + 1;
+        if (newC < island[0].length) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        newR = r;
+        newC = c - 1;
+        if (newC >= 0) {
+            validLocs.add(new int[] { newR, newC });
+        }
+
+        return validLocs;
+    }
+
+    public static int[] startLocation(int[][] island) {
+        for (int r = 0; r < island.length; r++) {
+            for (int c = 0; c < island[0].length; c++) {
+                if (island[r][c] == 0) {
+                    return new int[] { r, c };
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("No start found");
     }
 }
