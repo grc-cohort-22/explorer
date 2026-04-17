@@ -29,9 +29,50 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        // Implement your method here!
-        // Please also make more test cases
-        // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        int rows = island.length;
+        int columns = island[0].length;
+
+        int[] explorer = findExplorer(island);
+
+        boolean[][] visited = new boolean[rows][columns];
+        return reachableArea(island, visited, explorer[0], explorer[1]);
+    }
+
+    private static int reachableArea(int[][] island, boolean[][] visited, int row, int column) {
+        if(row < 0 || column < 0 || row >= island.length || column >= island[0].length) return 0;
+        if(visited[row][column]) return 0;
+
+        int tileBeingChecked = island[row][column];
+        if(tileBeingChecked == 2 || tileBeingChecked == 3) return 0;
+
+        visited[row][column] = true;
+
+        int tileCount = 1;
+
+        int south = reachableArea(island, visited, row+1, column);
+        tileCount += south;
+
+        int north = reachableArea(island, visited, row-1, column);
+        tileCount += north;
+
+        int east = reachableArea(island, visited, row, column+1);
+        tileCount += east;
+
+        int west = reachableArea(island, visited, row, column-1);
+        tileCount += west;
+
+        return tileCount;
+    }
+
+    private static int[] findExplorer(int[][] island) {
+        for(int row = 0; row < island.length; row++) {
+            for(int column = 0; column < island[0].length; column++) {
+                if(island[row][column] == 0) {
+                    return new int[]{row, column};
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("No explorer was on the island.");
     }
 }

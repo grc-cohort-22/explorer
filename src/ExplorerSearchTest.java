@@ -15,6 +15,46 @@ public class ExplorerSearchTest {
         assertEquals(14, actual);
     }
 
-    // Add more tests here!
-    // Come up with varied cases
+    @Test
+    public void testReachableArea_allReachable() {
+        int[][] island = {
+            {0,1,1},
+            {1,1,1},
+            {1,1,1}
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(9, actual);
+    }
+
+    @Test
+    public void testReachableArea_boxedIn() {
+        int[][] island = {
+            {2,2,2},
+            {2,0,2},
+            {2,2,2}
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(1, actual);
+    }
+
+    @Test
+    public void testReachableArea_onlyExplorer() {
+        int[][] island = {
+            {0}
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(1, actual);
+    }
+
+    @Test
+    public void testReachableArea_noExplorer() {
+        int[][] island = {
+            {1,1,1},
+            {1,2,1},
+            {1,1,1}
+        };
+        assertThrows(IllegalArgumentException.class, () -> {
+            ExplorerSearch.reachableArea(island);
+        });
+    }
 }
