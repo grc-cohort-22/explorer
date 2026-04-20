@@ -34,7 +34,67 @@ public class ExplorerSearch {
         // I STRONGLY RECOMMEND testing some helpers you might make too
         // Locate and store the persons location on the island
         int[] personLocation = findPersonLocation(island);
-        return -1;
+
+        // Track all visited spots on the island
+        boolean[][] visited = new boolean[island.length][island[0].length];
+
+        // Return the number of spots we reached
+        int count = canReach(personLocation, island, visited);
+        return count;
+    }
+
+    private static int canReach(int[] currentLocation, int[][] island, boolean[][] visited) {
+        int currR = currentLocation[0];
+        int currC = currentLocation[1];
+
+        if (visited[currR][currC]) return 0;
+        visited[currR][currC] = true;
+
+        int count = 1;
+
+        List<int[]> validLocations = possibleMoves(island, currentLocation);
+
+        for (int[] point : validLocations) {
+            count += canReach(point, island, visited);
+        }
+
+        return count;
+    }
+
+    public static List<int[]> possibleMoves(int[][] island, int[] currentLocation) {
+        int currR = currentLocation[0];
+        int currC = currentLocation[1];
+        List<int[]> validLocations = new ArrayList<>();
+
+        // up
+        int newR = currR - 1;
+        int newC = currC;
+        if (newR >= 0 && (island[newR][newC] == 0 || island[newR][newC] == 1)) {
+            validLocations.add(new int[] {newR, newC});
+        }
+
+        // down
+        newR = currR + 1;
+        newC = currC;
+        if (newR < island.length && (island[newR][newC] == 0 || island[newR][newC] == 1)) {
+            validLocations.add(new int[] {newR, newC});
+        }
+
+        // left
+        newR = currR;
+        newC = currC - 1;
+        if (newC >= 0 && (island[newR][newC] == 0 || island[newR][newC] == 1)) {
+            validLocations.add(new int[] {newR, newC});
+        }
+
+        // right
+        newR = currR;
+        newC = currC + 1;
+        if (newC < island[0].length && (island[newR][newC] == 0 || island[newR][newC] == 1)) {
+            validLocations.add(new int[] {newR, newC});
+        }
+
+        return validLocations;
     }
 
     /**
