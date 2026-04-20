@@ -32,6 +32,23 @@ public class ExplorerSearch {
         // Implement your method here!
         // Please also make more test cases
         // I STRONGLY RECOMMEND testing some helpers you might make too
+        // Locate and store the persons location on the island
+        int[] personLocation = findPersonLocation(island);
         return -1;
+    }
+
+    /**
+     * This method is designed to find a person on a rectangular 2d array
+     * Will throw an illegal argument exception if there is no person on the island
+     * @param island
+     * @return coordinates/location of the found person
+     */
+    public static int[] findPersonLocation(int[][] island) {
+        for (int r = 0; r < island.length; r++) {
+            for (int c = 0; c < island[r].length; c++) {
+                if (island[r][c] == 0) return new int[] {r, c};
+            }
+        }
+        throw new IllegalArgumentException("Preson not found in island.");
     }
 }
