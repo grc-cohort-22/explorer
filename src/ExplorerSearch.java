@@ -34,4 +34,14 @@ public class ExplorerSearch {
         // I STRONGLY RECOMMEND testing some helpers you might make too
         return -1;
     }
+
+    // Returns starting location
+    public static int[] startingLocation(char[][] map) {
+        for (int row = 0; row < map.length; row++) {
+            for (int col = 0; col < map[row].length; col++) {
+                if (map[row][col] == 0) return new int[]{row, col};
+            }
+        }
+        throw new IllegalArgumentException("No starting location present");
+    }
 }
