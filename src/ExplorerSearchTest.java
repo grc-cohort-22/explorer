@@ -24,6 +24,73 @@ public class ExplorerSearchTest {
     // Come up with varied cases
 
     @Test
+    public void testReachableArea_allReachable() {
+        int[][] island = {
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,0,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(30, actual);
+    }
+
+    @Test
+    public void testReachableArea_allUnreachable() {
+        int[][] island = {
+            {1,1,1,1,1,1},
+            {1,1,3,3,3,1},
+            {1,1,3,0,2,1},
+            {1,1,2,2,2,1},
+            {1,1,1,1,1,1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(1, actual);
+    }
+
+    @Test
+    public void testReachableArea_noStartingPosition() {
+        int[][] island = {
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+            {1,1,1,1,1,1},
+        };
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            ExplorerSearch.reachableArea(island);
+        });
+        assertEquals("No starting location present", exception.getMessage());
+    }
+
+    @Test
+    public void testReachableArea_windyPath() {
+        int[][] island = {
+            {0,1,1,1,1,1},
+            {3,3,3,3,3,1},
+            {1,1,1,1,1,1},
+            {1,2,2,2,2,2},
+            {1,1,1,1,1,1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(20, actual);
+    }
+
+    @Test
+    public void testReachableArea_blockedOffAreas() {
+        int[][] island = {
+            {1,1,1,1,1,1},
+            {1,1,3,1,1,1},
+            {1,2,1,2,1,1},
+            {3,1,1,1,3,2},
+            {1,1,1,0,1,1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(10, actual);
+    }
+
+    @Test
     public void testStartingLocation_centerOfGrid() {
         int[][] map = {
             {1, 2, 3},
