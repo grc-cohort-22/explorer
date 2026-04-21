@@ -32,6 +32,77 @@ public class ExplorerSearch {
         // Implement your method here!
         // Please also make more test cases
         // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        int[] startLocation = explorerLocation(island);
+        boolean[][] visited = new boolean[island.length][island[0].length];
+
+        return canReach(startLocation, island, visited);
+    }
+
+    private static int canReach(int[] currentLocation, int[][] island, boolean[][] visited){
+        int currentRow = currentLocation[0];
+        int currentColumn = currentLocation[1];
+
+        if (island[currentRow][currentColumn] == 2 || island[currentRow][currentColumn] == 3) return 0;
+        if (visited[currentRow][currentColumn]) return 0;
+        
+        visited[currentRow][currentColumn] = true;
+
+        int count = 1;
+        for(int[] move: possibleMoves(island, currentLocation)){
+            count += canReach(move, island, visited);
+        }
+        return count;
+    }
+
+    public static List<int[]> possibleMoves(int[][] island, int[] location){
+        int currentRow = location[0];
+        int currentColumn = location[1];
+
+        List<int[]> validLocations = new ArrayList<>();
+
+        //up
+        int newRow = currentRow -1;
+        int newColumn = currentColumn;
+        
+        if (newRow >= 0 && (island[newRow][newColumn] != 2 && island[newRow][newColumn] != 3)) {
+            validLocations.add(new int[]{newRow, newColumn});
+        }
+        
+        //down
+        newRow = currentRow + 1;
+        newColumn = currentColumn;
+        
+        if (newRow < island.length && (island[newRow][newColumn] != 2 && island[newRow][newColumn] != 3)) {
+            validLocations.add(new int[]{newRow, newColumn});
+        }
+
+        //left
+        newRow = currentRow;
+        newColumn = currentColumn - 1;
+        
+        if(newColumn >= 0 && (island[newRow][newColumn] != 2 && island[newRow][newColumn] != 3)){
+            validLocations.add(new int[]{newRow, newColumn});
+        }
+
+        //right
+        newRow = currentRow;
+        newColumn = currentColumn + 1;
+        
+        if (newColumn < island[0].length && (island[newRow][newColumn] != 2 && island[newRow][newColumn] != 3)) {
+            validLocations.add(new int[]{newRow, newColumn});
+        }
+
+        return validLocations;
+    }
+
+    public static int[] explorerLocation(int[][] island){
+        for(int row = 0; row < island.length; row++){
+            for(int col = 0; col < island[0].length; col++){
+                if(island[row][col] == 0){
+                    return new int[] {row, col};
+                }
+            }
+        }
+        throw new IllegalArgumentException("No explorer present");
     }
 }
