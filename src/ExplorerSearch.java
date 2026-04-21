@@ -43,6 +43,35 @@ public class ExplorerSearch {
     }
 
     private static int reachableArea(int[][] island, int[] current, boolean[][] visited) {
+        int currentR = current[0];
+        int currentC = current[1];
+        if (visited[currentR][currentC]) return 0;
+        visited[currentR][currentC] = true;
+        List<int[]> moves = possibleMoves(island, current);
+    }
 
+    private static List<int[]> possibleMoves(int[][] island, int[] current) {
+        int currentR = current[0];
+        int currentC = current[1];
+
+        List<int[]> output = new ArrayList<int[]>();
+
+        int newR = currentR-1;
+        int newC = currentC;
+        if (newR >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR+1;
+        newC = currentC;
+        if (newR < island.length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR;
+        newC = currentC-1;
+        if (newR >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR;
+        newC = currentC+1;
+        if (newR < island[0].length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        return output;
     }
 }
