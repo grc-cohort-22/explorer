@@ -29,9 +29,55 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        // Implement your method here!
-        // Please also make more test cases
-        // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        int[] start = new int[]{-1, -1};
+        for (int i = 0; i < island.length; i++) {
+            for (int j = 0; j < island[0].length; j++) {
+                if (island[i][j] == 0) {
+                    start[0] = i;
+                    start[1] = j;
+                }
+            }
+        }
+        if (start[0] == -1||start[1] == -1) throw new IllegalArgumentException("Explorer not found");
+        return reachableArea(island, start, new boolean[island.length][island[0].length])+1;
+    }
+
+    private static int reachableArea(int[][] island, int[] current, boolean[][] visited) {
+        int currentR = current[0];
+        int currentC = current[1];
+        if (visited[currentR][currentC]) return 0;
+        visited[currentR][currentC] = true;
+        List<int[]> moves = possibleMoves(island, current);
+        int output = island[currentR][currentC];
+        if (moves.isEmpty()) return output;
+        else for (int[] x : moves) {
+            output += reachableArea(island, x, visited);
+        }
+        return output;
+    }
+
+    private static List<int[]> possibleMoves(int[][] island, int[] current) {
+        int currentR = current[0];
+        int currentC = current[1];
+
+        List<int[]> output = new ArrayList<int[]>();
+
+        int newR = currentR-1;
+        int newC = currentC;
+        if (newR >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR+1;
+        newC = currentC;
+        if (newR < island.length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR;
+        newC = currentC-1;
+        if (newC >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        newR = currentR;
+        newC = currentC+1;
+        if (newC < island[0].length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+
+        return output;
     }
 }
