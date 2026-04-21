@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExplorerSearch {
 
@@ -32,6 +34,89 @@ public class ExplorerSearch {
         // Implement your method here!
         // Please also make more test cases
         // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        // Set<String> visited = new HashSet<>();
+        int[] startLocation = ExplorerLocation(island);
+        boolean[][] visited = new boolean[island.length][island[0].length];
+
+        return reachableArea(startLocation, island, visited);
+
     }
+    private static int reachableArea(int[] currentLoc, int[][] island, boolean[][] visited) { 
+        int curR = currentLoc[0];
+        int curC = currentLoc[1];
+        
+        if (visited[curR][curC]) return 0;
+        visited[curR][curC] = true;
+
+        int sum = 0;
+        for (int[] move : possibleMoves(island, currentLoc)) {
+            sum += reachableArea(move, island, visited);
+        }
+
+        return sum + 1;
+    }
+
+    public static List<int[]> possibleMoves(int[][] island, int[] location) {
+        int curR = location[0];
+        int curC = location[1];
+
+        List<int[]> validLocs = new ArrayList<>();
+
+        // UP
+        int newR = curR - 1;
+        int newC = curC;
+
+        if (newR >= 0 && island[newR][newC] == 1) {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // DOWN
+        newR = curR + 1;
+        newC = curC;
+
+        if (newR < island.length && island[newR][newC] == 1) {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // LEFT
+        newR = curR;
+        newC = curC - 1;
+
+        if (newC >= 0 && island[newR][newC] == 1) {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // RIGHT
+        newR = curR;
+        newC = curC + 1;
+
+        if (newC < island[newR].length && island[newR][newC] == 1) {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        return validLocs;
+    }
+    // int[][] island = {
+    //     {1,1,1,3,1,1},
+    //     {3,2,3,1,3,1},
+    //     {1,1,1,1,3,3},
+    //     {3,1,2,1,0,1},
+    //     {1,1,1,2,1,1},
+    // };
+
+    //return the [row, col] location fot eh salamander
+    //throw IllegalArgumentException if there is no salamander.
+    public static int[] ExplorerLocation(int[][] island) {
+        for (int row = 0; row < island.length; row++) {
+            for (int col = 0; col < island[row].length; col++) {
+                if (island[row][col] == 0) {
+                    int[] result = {row, col};
+                    return result;
+                }
+            }
+        }
+        
+        throw new IllegalArgumentException("No explorer present");
+    }
+    
 }
