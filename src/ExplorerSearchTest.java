@@ -49,4 +49,63 @@ public class ExplorerSearchTest {
         int actual = ExplorerSearch.reachableArea(island);
         assertEquals(17, actual);
     }
+
+    @Test
+    public void testReachableArea_alone() {
+        int[][] island = {
+            {1,3,2,2,2,2},
+            {1,3,2,1,3,2},
+            {1,3,2,1,3,2},
+            {2,2,2,1,3,2},
+            {2,2,2,0,3,2},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(4, actual);
+    }
+
+    @Test
+    public void testReachableArea_lopsided() {
+        int[][] island = {
+            {1,1,1,1},
+            {1,3,3,1},
+            {1,1,3,1},
+            {1,1,3,1},
+            {1,1,3,0},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(15, actual);
+    }
+
+    @Test
+    public void testReachableArea_massive() {
+        int[][] island = {
+            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+            {2,2,2,2,2,3,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2},
+            {2,2,1,1,3,3,3,1,1,1,1,1,1,1,1,1,1,1,2,2,2},
+            {2,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,1,1,1,2,2},
+            {2,2,1,3,3,1,1,1,3,3,3,3,1,3,3,3,1,1,1,2,2},
+            {2,2,3,3,3,1,1,1,1,3,3,3,1,1,3,3,2,2,1,1,2},
+            {2,2,3,3,3,0,1,1,1,1,3,3,1,1,3,3,2,2,1,1,2},
+            {2,2,1,1,1,1,1,1,3,3,3,3,1,3,3,3,1,1,1,2,2},
+            {2,2,1,2,1,1,1,1,3,3,3,3,3,3,3,3,1,1,1,2,2},
+            {2,2,2,2,1,1,1,1,1,3,3,3,3,3,3,3,2,1,2,2,2},
+            {2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,1,2,2,2},
+            {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(77, actual);
+    }
+
+    @Test
+    public void testReachableArea_fail() {
+        int[][] island = {
+            {1,3,2,2,2,2},
+            {1,3,2,1,3,2},
+            {1,3,2,1,3,2},
+            {2,2,2,1,3,2},
+            {2,2,2,1,3,2},
+        };
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {ExplorerSearch.reachableArea(island);});
+        assertTrue(exception.getMessage().contains("Explorer not found"));
+    }
 }
