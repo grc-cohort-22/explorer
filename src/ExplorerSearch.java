@@ -29,9 +29,79 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        // Implement your method here!
-        // Please also make more test cases
-        // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        int[] startLocation = explorerLocation(island);
+        int[][] visited = new int[island.length][island[0].length];
+        return reachableArea(startLocation, island, visited);
+    }
+
+    private static int reachableArea(int[] curLocation, int[][] island, int[][] visited) {
+        int row = curLocation[0];
+        int col = curLocation[1];
+
+
+        //Explorer Game conditions
+        if (row < 0 || row >= island.length || col < 0 || col >= island[0].length) return 0;
+        if (visited[row][col] == 1) return 0;
+        if (island[row][col] == 2) return 0;
+        if (island[row][col] == 3) return 0;
+
+
+        // Add one to visited to denote that the explore has encountered a 1 tile
+        visited[row][col] = 1;
+        // Set the number of locations to one. Recursive calls will increment this value
+        int numberOfLocations = 1;
+        for (int[] move : possibleMoves(island, curLocation)) {
+            numberOfLocations += reachableArea(move, island, visited);
+            }
+            return numberOfLocations;
+        }
+
+    private static int[] explorerLocation(int[][] island) {
+        for (int row = 0; row < island.length; row++) {
+            for (int col = 0; col < island[0].length; col++) {
+                if (island[row][col] == 0) {
+                    return new int[]{row, col};
+                }
+            }
+        }
+        throw new IllegalArgumentException("No explorer present");
+    }
+   
+    private static List<int[]> possibleMoves(int[][] island, int[] location) {
+        int curR = location[0];
+        int curC = location[1];
+        List<int[]> validLocations = new ArrayList<>();
+
+
+        // UP
+        int newR = curR - 1;
+        int newC = curC;
+        if (newR >= 0 && island[newR][newC] != 2 && island[newR][newC] != 3) {
+            validLocations.add(new int[]{newR, newC});
+        }
+
+
+        // DOWN
+        newR = curR + 1;
+        newC = curC;
+        if (newR < island.length && island[newR][newC] != 2 && island[newR][newC] != 3) {
+            validLocations.add(new int[]{newR, newC});
+        }
+       
+        // LEFT
+        newR = curR;
+        newC = curC - 1;
+        if (newC >= 0 && island[newR][newC] != 2 && island[newR][newC] != 3) {
+            validLocations.add(new int[]{newR, newC});
+        }
+       
+        // RIGHT
+        newR = curR;
+        newC = curC + 1;
+        if (newC < island[0].length && island[newR][newC] != 2 && island[newR][newC] != 3) {
+            validLocations.add(new int[]{newR, newC});
+        }
+       
+        return validLocations;
     }
 }
