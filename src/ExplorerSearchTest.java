@@ -91,6 +91,43 @@ public class ExplorerSearchTest {
     }
 
     @Test
+    public void testReachableArea_jaggedArrayAllReachable() {
+        int[][] island = {
+            {1,1,1,1,1,1},
+            {1,1,1,1},
+            {1,1,1,1,1,1,0,1,1},
+            {1,1,1,1,1,1},
+            {1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(26, actual);
+    }
+
+    @Test
+    public void testReachableArea_jaggedArraySomeUnreachable() {
+        int[][] island = {
+            {1,2,2,1,2,1},
+            {1,2,2,1},
+            {1,1,1,1,3,1,0,1,1},
+            {3,3,1,1,1,1},
+            {1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(16, actual);
+    }
+
+    @Test
+    public void testReachableArea_jaggedArrayAllUnreachable() {
+        int[][] island = {
+            {2,1,1,1},
+            {0},
+            {3,1,1,1},
+        };
+        int actual = ExplorerSearch.reachableArea(island);
+        assertEquals(1, actual);
+    }
+
+    @Test
     public void testStartingLocation_centerOfGrid() {
         int[][] map = {
             {1, 2, 3},
