@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExplorerSearch {
 
@@ -32,6 +34,87 @@ public class ExplorerSearch {
         // Implement your method here!
         // Please also make more test cases
         // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        Set<String> visited = new HashSet<>();
+
+        return visited.size();
+    }
+
+    public static boolean canReach(char[][] enclosure) {
+        int [] startLocation = salamanderLocation(enclosure);
+        boolean[][] visisted = new boolean[enclosure.length][enclosure[0].length];
+        return canReach(startLocation, enclosure, visisted);
+    }
+
+    private static boolean canReach(int[] currentLoc, char[][] enclosure, boolean[][] visisted) {
+        int curR = currentLoc[0];
+        int curC = currentLoc[1];
+        if (enclosure[curR][curC] == 'f') return true;
+        if (visisted[curR][curC]) return false;
+
+        visisted[curR][curC] = true;
+
+        
+        for (int[] move : possibleMoves(enclosure, currentLoc)) {
+            if (canReach(move, enclosure, visisted)) {
+                return true;
+            }
+        }
+        return false;
+        
+    }
+
+    public static List<int[]> possibleMoves(char[][] enclosure, int[] location) {
+        int curR = location[0];
+        int curC = location[1];
+
+        List<int[]> validLocs = new ArrayList<>();
+
+        // UP
+        int newR = curR - 1;
+        int newC = curC;
+
+        if (newR >= 0 && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // DOWN
+        newR = curR + 1;
+        newC = curC;
+
+        if (newR < enclosure.length && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // LEFT
+        newR = curR;
+        newC = curC - 1;
+
+        if (newC >= 0 && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        // RIGHT
+        newR = curR;
+        newC = curC + 1;
+
+        if (newC < enclosure[newR].length && enclosure[newR][newC] != 'W') {
+            validLocs.add(new int[]{newR, newC});
+
+        }
+        return validLocs;
+    }
+
+    //return the [row, col] location fot eh salamander
+    //throw IllegalArgumentException if there is no salamander.
+    public static int[] salamanderLocation(char[][] enclosure) {
+        for (int row = 0; row < enclosure.length; row++) {
+            for (int col = 0; col < enclosure[row].length; col++) {
+                if (enclosure[row][col] == 's') {
+                    int[] result = {row, col};
+                    return result;
+                }
+            }
+        }
+        throw new IllegalArgumentException("No salamander present");
     }
 }
