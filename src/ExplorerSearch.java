@@ -39,7 +39,7 @@ public class ExplorerSearch {
             }
         }
         if (start[0] == -1||start[1] == -1) throw new IllegalArgumentException("Explorer not found");
-        return reachableArea(island, start, new boolean[island.length][island[0].length]);
+        return reachableArea(island, start, new boolean[island.length][island[0].length])+1;
     }
 
     private static int reachableArea(int[][] island, int[] current, boolean[][] visited) {
@@ -48,7 +48,7 @@ public class ExplorerSearch {
         if (visited[currentR][currentC]) return 0;
         visited[currentR][currentC] = true;
         List<int[]> moves = possibleMoves(island, current);
-        int output = island[currentC][currentR];
+        int output = island[currentR][currentC];
         if (moves.isEmpty()) return output;
         else for (int[] x : moves) {
             output += reachableArea(island, x, visited);
@@ -72,11 +72,11 @@ public class ExplorerSearch {
 
         newR = currentR;
         newC = currentC-1;
-        if (newR >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+        if (newC >= 0 && island[newR][newC] == 1) output.add(new int[]{newR, newC});
 
         newR = currentR;
         newC = currentC+1;
-        if (newR < island[0].length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
+        if (newC < island[0].length && island[newR][newC] == 1) output.add(new int[]{newR, newC});
 
         return output;
     }
