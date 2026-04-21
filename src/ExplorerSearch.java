@@ -32,7 +32,7 @@ public class ExplorerSearch {
         int[] start = new int[]{-1, -1};
         for (int i = 0; i < island.length; i++) {
             for (int j = 0; j < island[0].length; j++) {
-                if (island[i][j] == 's') {
+                if (island[i][j] == 0) {
                     start[0] = i;
                     start[1] = j;
                 }
@@ -48,6 +48,12 @@ public class ExplorerSearch {
         if (visited[currentR][currentC]) return 0;
         visited[currentR][currentC] = true;
         List<int[]> moves = possibleMoves(island, current);
+        int output = island[currentC][currentR];
+        if (moves.isEmpty()) return output;
+        else for (int[] x : moves) {
+            output += reachableArea(island, x, visited);
+        }
+        return output;
     }
 
     private static List<int[]> possibleMoves(int[][] island, int[] current) {
