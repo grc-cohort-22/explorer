@@ -29,14 +29,20 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        boolean valid = false;
+        int[] start = new int[]{-1, -1};
         for (int i = 0; i < island.length; i++) {
             for (int j = 0; j < island[0].length; j++) {
                 if (island[i][j] == 's') {
-                    int[] start = new int[]{i, j};
+                    start[0] = i;
+                    start[1] = j;
                 }
             }
         }
-        if (!valid) throw new IllegalArgumentException("Explorer not found");
+        if (start[0] == -1||start[1] == -1) throw new IllegalArgumentException("Explorer not found");
+        return reachableArea(island, start, new boolean[island.length][island[0].length]);
+    }
+
+    private static int reachableArea(int[][] island, int[] current, boolean[][] visited) {
+
     }
 }
