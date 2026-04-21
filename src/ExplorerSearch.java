@@ -34,11 +34,28 @@ public class ExplorerSearch {
         // Implement your method here!
         // Please also make more test cases
         // I STRONGLY RECOMMEND testing some helpers you might make too
-        Set<String> visited = new HashSet<>();
+        // Set<String> visited = new HashSet<>();
         int[] startLocation = ExplorerLocation(island);
+        boolean[][] visited = new boolean[island.length][island[0].length];
 
-        return visited.size();
+        return reachableArea(startLocation, island, visited);
+
     }
+    private static int reachableArea(int[] currentLoc, int[][] island, boolean[][] visited) { 
+        int curR = currentLoc[0];
+        int curC = currentLoc[1];
+        
+        if (visited[curR][curC]) return 0;
+        visited[curR][curC] = true;
+
+        int sum = 0;
+        for (int[] move : possibleMoves(island, currentLoc)) {
+            sum += reachableArea(move, island, visited);
+        }
+
+        return sum + 1;
+    }
+
     // int[][] island = {
     //     {1,1,1,3,1,1},
     //     {3,2,3,1,3,1},
