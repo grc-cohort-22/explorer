@@ -29,9 +29,14 @@ public class ExplorerSearch {
      * @return the number of spaces the explorer can reach
      */
     public static int reachableArea(int[][] island) {
-        // Implement your method here!
-        // Please also make more test cases
-        // I STRONGLY RECOMMEND testing some helpers you might make too
-        return -1;
+        boolean valid = false;
+        for (int i = 0; i < island.length; i++) {
+            for (int j = 0; j < island[0].length; j++) {
+                if (island[i][j] == 's') {
+                    int[] start = new int[]{i, j};
+                }
+            }
+        }
+        if (!valid) throw new IllegalArgumentException("Explorer not found");
     }
 }
